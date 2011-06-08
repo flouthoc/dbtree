@@ -1,7 +1,7 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -ansi -O2
-SOURCE=dbtree.c test.c
-BIN=test
+CC := gcc
+CFLAGS := -g -Wall -Wextra -O2
+SOURCE := dbtree.c test.c
+BIN := test
 
 all: $(SOURCE)
 	$(CC) $(CFLAGS) -o $(BIN) $(SOURCE)
@@ -11,5 +11,8 @@ all: $(SOURCE)
 run: $(BIN)
 	./$(BIN)
 
-clean: $(BIN)
-	@rm -f $(BIN)
+debug: $(BIN)
+	valgrind -v $(BIN)
+
+clean:
+	@rm -f $(BIN) output.log
