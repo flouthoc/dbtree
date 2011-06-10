@@ -24,6 +24,10 @@ void *dbtree_store(dbtree *tree, const char *key, void *value) {
 		    tmp = malloc(sizeof(dbtree));
 		    tmp->c = *key;
 		    tmp->value = NULL;
+		    tmp->child = NULL;
+		    tmp->previous = NULL;
+		    tmp->next = NULL;
+		    tmp->parent = tree;
 		    tree = tree->child = tmp;
 		}
 		return tree->value = value;
@@ -32,12 +36,20 @@ void *dbtree_store(dbtree *tree, const char *key, void *value) {
 	    tmp = malloc(sizeof(dbtree));
 	    tmp->c = *key;
 	    tmp->value = NULL;
+	    tmp->child = NULL;
+	    tmp->next = NULL;
+	    tmp->parent = NULL;
+	    tmp->previous = tree;
 	    tree = tree->next = tmp;
 	    key++;
 	    while (*key++ != (char) 0) {
 	        tmp = malloc(sizeof(dbtree));
 	        tmp->c = *key;
 	        tmp->value = NULL;
+		tmp->child = NULL;
+		tmp->previous = NULL;
+		tmp->next = NULL;
+		tmp->parent = tree;
 	        tree = tree->child = tmp;
 	    }
 	    return tree->value = value;
@@ -83,6 +95,10 @@ int dbtree_remove(dbtree *tree, const char *key) {
 		if (tree->child == NULL) {
 		    if (tree->previous != NULL) {
 			tree->previous->next = tree->next;
+			if (tree->next != NULL)
+			    tree->next->previous = tree->previous;
+			if (tree->parent != NULL)
+			    tree->parent->child = NULL;
 			free(tree);
 		    }
 		}

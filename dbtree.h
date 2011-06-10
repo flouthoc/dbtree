@@ -8,7 +8,7 @@ typedef struct dbtree {
     char c;
     struct dbtree *previous;
     struct dbtree *next;
-    /*struct dbtree *parent;*/
+    struct dbtree *parent;
     struct dbtree *child;
     void *value;
 } dbtree;
