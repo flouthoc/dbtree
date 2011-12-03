@@ -1,6 +1,22 @@
 #include <stdlib.h>
 #include "dbtree.h"
 
+inline static void *__child_push(dbtree *tree, const char *key, void *value) {
+    key++;
+    while (*key != (char) 0) {
+	dbtree* tmp = malloc(sizeof(dbtree));
+	tmp->c = *key;
+	key++;
+	tmp->value = NULL;
+	tmp->child = NULL;
+	tmp->previous = NULL;
+	tmp->next = NULL;
+	tmp->parent = tree;
+	tree = tree->child = tmp;
+    }
+    return tree->value = value;
+}
+
 void *dbtree_store(dbtree *tree, const char *key, void *value) {
     dbtree *tmp;
 
@@ -18,20 +34,8 @@ void *dbtree_store(dbtree *tree, const char *key, void *value) {
 	    }
 	    if (tree->child != NULL)
 		tree = tree->child;
-	    else {
-		key++;
-		while (*key++ != (char) 0) {
-		    tmp = malloc(sizeof(dbtree));
-		    tmp->c = *key;
-		    tmp->value = NULL;
-		    tmp->child = NULL;
-		    tmp->previous = NULL;
-		    tmp->next = NULL;
-		    tmp->parent = tree;
-		    tree = tree->child = tmp;
-		}
-		return tree->value = value;
-	    }
+	    else
+		return __child_push(tree, key, value);
 	} else {
 	    tmp = malloc(sizeof(dbtree));
 	    tmp->c = *key;
@@ -41,18 +45,7 @@ void *dbtree_store(dbtree *tree, const char *key, void *value) {
 	    tmp->parent = NULL;
 	    tmp->previous = tree;
 	    tree = tree->next = tmp;
-	    key++;
-	    while (*key++ != (char) 0) {
-	        tmp = malloc(sizeof(dbtree));
-	        tmp->c = *key;
-	        tmp->value = NULL;
-		tmp->child = NULL;
-		tmp->previous = NULL;
-		tmp->next = NULL;
-		tmp->parent = tree;
-	        tree = tree->child = tmp;
-	    }
-	    return tree->value = value;
+	    return __child_push(tree, key, value);
 	}
     }
     return NULL;
@@ -89,7 +82,8 @@ int dbtree_remove(dbtree *tree, const char *key) {
 	if (tree->c == *key && *key > (char) 0) {
 	    if (*(key+1) == (char) 0) {
 		if (tree->value != NULL)
-		    tree->value = NULL;//free(tree->value);
+		    tree->value = NULL;
+		    /* free(tree->value); */
 		else
 		    return 0;
 		if (tree->child == NULL) {
@@ -112,4 +106,16 @@ int dbtree_remove(dbtree *tree, const char *key) {
 	    return 0;
     }
     return 0;
+}
+
+void dbtree_destroy(dbtree *tree) {
+    if (tree->next)
+	dbtree_destroy(tree->next);
+    if (tree->child)
+	dbtree_destroy(tree->child);
+    while (tree) {
+	dbtree *next = tree->next;
+	free(tree);
+	tree = next;
+    }
 }

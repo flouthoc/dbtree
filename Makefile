@@ -11,8 +11,11 @@ all: $(SOURCE)
 run: $(BIN)
 	./$(BIN)
 
+memcheck: $(BIN)
+	valgrind -v --leak-check=full --show-reachable=yes --track-origins=yes ./$(BIN)
+
 debug: $(BIN)
-	valgrind -v $(BIN)
+	gdb $(BIN)
 
 clean:
 	@rm -f $(BIN) output.log

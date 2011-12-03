@@ -37,4 +37,11 @@ Returns 1 if successful, otherwise 0
 
 ## dbtree_destroy
 
-To be implemented; it will let you destroy the entire database and release (free) memory.
+It cleans the entire database and release (free) memory.
+
+    void dbtree_destroy(dbtree *tree);
+
+
+# TODO
+
+* Support for integers and other types. dbtree_remove() doesn't work on dynamic variables.

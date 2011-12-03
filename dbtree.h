@@ -20,6 +20,6 @@ void *dbtree_fetch(dbtree *tree, const char *key);
 /* remove the value of entry 'key' from 'tree' */
 int  dbtree_remove(dbtree *tree, const char *key);
 /* destroy the entire database and release memory */
-/*void dbtree_destroy(dbtree *tree);
-*/
+void dbtree_destroy(dbtree *tree);
+
 #endif

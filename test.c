@@ -32,17 +32,9 @@ int main(void) {
     dbtree_remove(tree, "mano") ? puts("done") : puts("is not defined") ;
     printf("mano      : %s\n", (char *)dbtree_fetch(tree, "mano"));
 
-    /* store integers or... whatever. TODO: dbtree_remove() won't work on dynamic variables */
-/*
-    int i = 8394;
-    dbtree_store(tree, "man", &i);
-    int *p = dbtree_fetch(tree, "man");
-    printf("\nStoring integers...\nman       : %d\n", *p);
-*/
+    printf("\n");
 
-    /* remove string. TODO: dbtree_destroy() needed */
-    dbtree_remove(tree, "man");
-    dbtree_remove(tree, "manovella");
+    dbtree_destroy(tree);
 
     return 0;
 }
