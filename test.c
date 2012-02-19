@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "dbtree.h"
 
 int main(void) {
     /* create our database tree */
-    dbtree *tree = malloc(sizeof(dbtree));
+    dbtree_create(tree);
 
     /* store strings */
     dbtree_store(tree, "mano", "v_mano");

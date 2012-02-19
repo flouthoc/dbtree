@@ -1,11 +1,17 @@
 # DBtree, a super-simple C database tree
 
 dbtree is a basic database tree used to store entries associated with their values.
-So, here are three simple functions you may use to create your tree and collect keys->values (something similar to a 'map' type):
+So, here are five simple functions you may use to create your tree and collect keys->values (something similar to a 'map' type):
 
-First initialize your dbtree
 
-    dbtree *mytree = malloc(sizeof(dbtree));
+## dbtree_create
+
+The first thing to do is to initialize your database, allocating memory
+
+    dbtree *MyDatabase = malloc(sizeof(dbtree));
+
+    Or simply:
+    dbtree_create(MyDatabase);
 
 
 ## dbtree_store
@@ -14,7 +20,10 @@ It stores the entry 'key' with the value (pointed by) 'value' in the 'tree'
 
     void *dbtree_store(dbtree *tree, const char *key, void *value);
 
-Returns a pointer pointing to 'value'
+    Example:
+    dbtree_store(MyDatabase, "Name", "John Smith");
+
+Returns a pointer pointing to 'value' if successful, otherwise NULL
 
 
 ## dbtree_fetch
@@ -23,6 +32,9 @@ It fetches the value of the entry 'key' stored in 'tree'
 
     void *dbtree_fetch(dbtree *tree, const char *key);
 
+    Example:
+    char *name = (char *) dbtree_fetch(MyDatabase, "Name");
+
 Returns a pointer pointing to the value of 'key' if existent, otherwise NULL
 
 
@@ -30,7 +42,10 @@ Returns a pointer pointing to the value of 'key' if existent, otherwise NULL
 
 It removes the value of entry 'key' from 'tree'
 
-    int  dbtree_remove(dbtree *tree, const char *key);
+    int dbtree_remove(dbtree *tree, const char *key);
+
+    Example:
+    int exists = dbtree_remove(MyDatabase, "Name");
 
 Returns 1 if successful, otherwise 0
 
@@ -40,6 +55,9 @@ Returns 1 if successful, otherwise 0
 It cleans the entire database and release (free) memory.
 
     void dbtree_destroy(dbtree *tree);
+
+    Example:
+    dbtree_destroy(MyDatabase);
 
 
 # TODO

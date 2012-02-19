@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include "dbtree.h"
 
 inline static void *__child_push(dbtree *tree, const char *key, void *value) {
