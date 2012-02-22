@@ -3,6 +3,7 @@
 dbtree is a basic database tree used to store entries associated with their values.
 So, here are five simple functions you may use to create your tree and collect keys->values (something similar to a 'map' type):
 
+Note: if you use manually alloced variables (via malloc, calloc..), you have to free them by yourself. However, when freed, their values won't be available for the database anymore. Indeed, the database just stores a pointer to the variable, not its value.
 
 ## dbtree_create
 

@@ -21,6 +21,27 @@ int main(void) {
 	(char *)dbtree_fetch(tree, "manovella"),
 	(char *)dbtree_fetch(tree, "undefined"));
 
+    /* store integers */
+    int i  = 1234567;
+    long l = 7891011;
+    float f = 3.14159;
+    double d = 123.45;
+    dbtree_store(tree, "integer", &i);
+    dbtree_store(tree, "long", &l);
+    dbtree_store(tree, "float", &f);
+    dbtree_store(tree, "double", &d);
+
+    /* fetch values */
+    printf("\nStoring numbers...\n"
+	    "integer   : %d\n"
+	    "long      : %ld\n"
+	    "float     : %f\n"
+	    "double    : %.4e\n",
+	    *(int *)dbtree_fetch(tree, "integer"),
+	    *(long *)dbtree_fetch(tree, "long"),
+	    *(float *)dbtree_fetch(tree, "float"),
+	    *(double *)dbtree_fetch(tree, "double"));
+
     /* remove an entry */
     printf("\nTrying to remove 'mano'... ");
     dbtree_remove(tree, "mano") ? puts("done") : puts("is not defined") ;
@@ -33,6 +54,7 @@ int main(void) {
 
     printf("\n");
 
+    /* destroy the database and free all memory */
     dbtree_destroy(tree);
 
     return 0;
