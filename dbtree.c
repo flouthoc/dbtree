@@ -1,6 +1,6 @@
 #include "dbtree.h"
 
-inline static void *__child_push(dbtree *tree, const char *key, void *value) {
+inline static void *__child_push(dbtree *tree, const char *key, void *value, unsigned int size) {
     key++;
     while (*key != (char) 0) {
 	dbtree* tmp = malloc(sizeof(dbtree));
@@ -13,10 +13,20 @@ inline static void *__child_push(dbtree *tree, const char *key, void *value) {
 	tmp->parent = tree;
 	tree = tree->child = tmp;
     }
-    return tree->value = value;
+
+    tree->size = size;
+    if (size > 0) {
+	tree->value = malloc(size);
+	memcpy(tree->value, value, size);
+    }
+    else {
+	tree->value = value;
+    }
+
+    return tree->value;
 }
 
-void *dbtree_store(dbtree *tree, const char *key, void *value) {
+void *dbtree_store(dbtree *tree, const char *key, void *value, unsigned int size) {
     dbtree *tmp;
 
     if (tree == NULL)
@@ -34,7 +44,7 @@ void *dbtree_store(dbtree *tree, const char *key, void *value) {
 	    if (tree->child != NULL)
 		tree = tree->child;
 	    else
-		return __child_push(tree, key, value);
+		return __child_push(tree, key, value, size);
 	} else {
 	    tmp = malloc(sizeof(dbtree));
 	    tmp->c = *key;
@@ -44,7 +54,7 @@ void *dbtree_store(dbtree *tree, const char *key, void *value) {
 	    tmp->parent = NULL;
 	    tmp->previous = tree;
 	    tree = tree->next = tmp;
-	    return __child_push(tree, key, value);
+	    return __child_push(tree, key, value, size);
 	}
     }
     return NULL;
@@ -80,9 +90,11 @@ int dbtree_remove(dbtree *tree, const char *key) {
 	    tree = tree->next;
 	if (tree->c == *key && *key > (char) 0) {
 	    if (*(key+1) == (char) 0) {
-		if (tree->value != NULL)
+		if (tree->value != NULL) {
+		    if (tree->size > 0)
+			free(tree->value);
 		    tree->value = NULL;
-		    /* free(tree->value); */
+		}
 		else
 		    return 0;
 		if (tree->child == NULL) {
@@ -114,6 +126,8 @@ void dbtree_destroy(dbtree *tree) {
 	dbtree_destroy(tree->child);
     while (tree) {
 	dbtree *next = tree->next;
+	if (tree->size > 0 && tree->value != NULL)
+	    free(tree->value);
 	free(tree);
 	tree = next;
     }

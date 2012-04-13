@@ -17,12 +17,13 @@ The first thing to do is to initialize your database, allocating memory
 
 ## dbtree_store
 
-It stores the entry 'key' with the value (pointed by) 'value' in the 'tree'
+It stores the entry 'key' with the value (pointed by) 'value' of 'size' bytes in the 'tree'.
+Set 'size' to 0 if 'value' is a constant, such as "abc" or 1234, so no additional memory will be allocated.
 
     void *dbtree_store(dbtree *tree, const char *key, void *value);
 
     Example:
-    dbtree_store(MyDatabase, "Name", "John Smith");
+    dbtree_store(MyDatabase, "Name", "John Smith", 0);
 
 Returns a pointer pointing to 'value' if successful, otherwise NULL
 
@@ -63,4 +64,4 @@ It cleans the entire database and release (free) memory.
 
 # TODO
 
-* Support for integers and other types. dbtree_remove() doesn't work on dynamic variables.
+* Overhead reduction: is all that alloc'd memory required?

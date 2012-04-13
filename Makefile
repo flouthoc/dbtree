@@ -18,4 +18,4 @@ debug: $(BIN)
 	gdb $(BIN)
 
 clean:
-	@rm -f $(BIN) output.log
+	-@rm -f $(BIN) output.log

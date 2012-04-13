@@ -6,9 +6,9 @@ int main(void) {
     dbtree_create(tree);
 
     /* store strings */
-    dbtree_store(tree, "mano", "v_mano");
-    dbtree_store(tree, "man", "v_man");
-    dbtree_store(tree, "manovella", "v_manovella");
+    dbtree_store(tree, "mano", "v_mano", 0);
+    dbtree_store(tree, "man", "v_man", 0);
+    dbtree_store(tree, "manovella", "v_manovella", 0);
 
     /* fetch values of our entries */
     printf("\nStoring strings...\n"
@@ -26,10 +26,10 @@ int main(void) {
     long l = 7891011;
     float f = 3.14159;
     double d = 123.45;
-    dbtree_store(tree, "integer", &i);
-    dbtree_store(tree, "long", &l);
-    dbtree_store(tree, "float", &f);
-    dbtree_store(tree, "double", &d);
+    dbtree_store(tree, "integer", &i, sizeof(int));
+    dbtree_store(tree, "long", &l, sizeof(long));
+    dbtree_store(tree, "float", &f, sizeof(float));
+    dbtree_store(tree, "double", &d, sizeof(double));
 
     /* fetch values */
     printf("\nStoring numbers...\n"
