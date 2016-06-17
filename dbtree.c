@@ -3,7 +3,7 @@
 inline static void *__child_push(dbtree *tree, const char *key, void *value, unsigned int size) {
     key++;
     while (*key != (char) 0) {
-	dbtree* tmp = malloc(sizeof(dbtree));
+	dbtree_create(tmp);
 	tmp->c = *key;
 	key++;
 	tmp->value = NULL;
@@ -27,7 +27,6 @@ inline static void *__child_push(dbtree *tree, const char *key, void *value, uns
 }
 
 void *dbtree_store(dbtree *tree, const char *key, void *value, unsigned int size) {
-    dbtree *tmp;
 
     if (tree == NULL)
 	return NULL;
@@ -46,7 +45,7 @@ void *dbtree_store(dbtree *tree, const char *key, void *value, unsigned int size
 	    else
 		return __child_push(tree, key, value, size);
 	} else {
-	    tmp = malloc(sizeof(dbtree));
+	    dbtree_create(tmp);
 	    tmp->c = *key;
 	    tmp->value = NULL;
 	    tmp->child = NULL;
